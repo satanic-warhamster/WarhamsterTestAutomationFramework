@@ -10,6 +10,8 @@ import org.frameworkdesign.excelhandler.ExcelHandlerLibrary;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.aventstack.extentreports.ExtentReports;
+
 public class GlobalDeclarations {
 	public static File fileObj;
 	//public static File fileURL;
@@ -35,4 +37,5 @@ public class GlobalDeclarations {
 	public static String strIteration;
 	public static String URL_LOCATION = CUR_DIR+"//Resources//URL//URLs.properties";
 	public static HashMap<String, Integer> hMapForCurrentState = new HashMap<String, Integer>();
+	public static ExtentReports extent;
 }
