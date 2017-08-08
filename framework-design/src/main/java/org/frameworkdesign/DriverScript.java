@@ -28,6 +28,7 @@ public class DriverScript extends FrameworkKeywords{
 	{
 		driverFile = System.getProperty("user.dir") + driverFile;
 		excelDriverFile = new ExcelHandlerLibrary(driverFile);
+		System.out.println("Check");
 	}
 	@Test
 	public static void mainArea() throws Exception
