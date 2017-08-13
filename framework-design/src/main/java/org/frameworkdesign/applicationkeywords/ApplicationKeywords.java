@@ -669,7 +669,9 @@ public class ApplicationKeywords extends GlobalDeclarations{
 		 */
 		public static void doWait(String objName, String keywordValue)
 		{
-			String validParams = "Tag,Action,@Back,@AdditionalObjects,@AdditionalTag";
+			String validParams = "Time";
 			ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
+			HashMap<String,String> hMapParam;
+			hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams);
 		}
 }
