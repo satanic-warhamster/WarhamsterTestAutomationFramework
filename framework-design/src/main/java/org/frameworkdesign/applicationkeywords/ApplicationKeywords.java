@@ -496,8 +496,7 @@ public class ApplicationKeywords extends GlobalDeclarations{
 			WebDriverWait wait = new WebDriverWait(driver, Integer.parseInt(hMapParam.get("Time").toString()));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 			
-		}
-		
+		}		
 		/*
 		 * Function Name - hoverOverObject
 		 * Description - Hovers over a given object  
@@ -661,5 +660,16 @@ public class ApplicationKeywords extends GlobalDeclarations{
 				}				
 			}
 		}
-		
+		/*
+		 * Function Name - doWait
+		 * Description - Waits for an object for a set time.
+		 * Input Parameters - Timeout period
+		 * Created By- Karthik
+		 * 
+		 */
+		public static void doWait(String objName, String keywordValue)
+		{
+			String validParams = "Tag,Action,@Back,@AdditionalObjects,@AdditionalTag";
+			ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
+		}
 }
