@@ -375,7 +375,7 @@ public class FrameworkKeywords extends GlobalDeclarations{
 					String siteName = (String) lstModuleSite.get(i);
 					
 					//Loads the OR File
-					objProp = loadProperties(orFilePath);
+					objProp = loadProperties(System.getProperty("user.dir")+orFilePath);
 					
 					homeURL = retrieveURL(siteName);
 					
@@ -384,7 +384,7 @@ public class FrameworkKeywords extends GlobalDeclarations{
 					
 					//Loads Module File to be used
 					
-					excelModuleFile = new ExcelHandlerLibrary(filePath);
+					excelModuleFile = new ExcelHandlerLibrary(System.getProperty("user.dir")+filePath);
 					ModuleHandler();
 					
 				}

@@ -3,12 +3,12 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="org.frameworkdesign.MainAutomationArea">
+      <class name="org.frameworkdesign.DriverScript">
         <methods>
-          <include name="storeURLValue"/>
           <include name="mainArea"/>
+          <include name="storeURLValue"/>
         </methods>
-      </class> <!-- org.frameworkdesign.MainAutomationArea -->
+      </class> <!-- org.frameworkdesign.DriverScript -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

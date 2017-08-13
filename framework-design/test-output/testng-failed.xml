@@ -4,12 +4,12 @@
   <test name="Test(failed)">
     <parameter name="driverFile" value="\\Resources\\DriverFile\\Driver File.xlsx"/>
     <classes>
-      <class name="org.frameworkdesign.MainAutomationArea">
+      <class name="org.frameworkdesign.DriverScript">
         <methods>
-          <include name="storeURLValue"/>
           <include name="mainArea"/>
+          <include name="storeURLValue"/>
         </methods>
-      </class> <!-- org.frameworkdesign.MainAutomationArea -->
+      </class> <!-- org.frameworkdesign.DriverScript -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

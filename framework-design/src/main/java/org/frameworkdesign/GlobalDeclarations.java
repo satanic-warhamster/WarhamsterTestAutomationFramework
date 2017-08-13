@@ -35,7 +35,7 @@ public class GlobalDeclarations {
 	public static int iIterNum;
 	public static int iCurrStep;
 	public static String strIteration;
-	public static String URL_LOCATION = CUR_DIR+"//Resources//URL//URLs.properties";
+	public static String URL_LOCATION = CUR_DIR+"\\Resources\\URL\\URLs.properties";
 	public static HashMap<String, Integer> hMapForCurrentState = new HashMap<String, Integer>();
 	public static ExtentReports extent;
 }

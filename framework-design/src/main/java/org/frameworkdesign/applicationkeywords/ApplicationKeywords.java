@@ -306,7 +306,7 @@ public class ApplicationKeywords extends GlobalDeclarations{
 			switch(hMapParam.get("Browser"))
 			{
 			case "CHROME":
-				System.setProperty("webdriver.chrome.driver","C:\\Users\\C024994\\Desktop\\chromedriver.exe");
+				System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir")+"\\Drivers\\chromedriver.exe");
 				
 				driver = new ChromeDriver();
 				driver.manage().window().maximize();
@@ -314,15 +314,22 @@ public class ApplicationKeywords extends GlobalDeclarations{
 				break;
 				
 			case "FF":
-				System.setProperty("webdriver.firefox.marionette","C:\\Users\\C030383\\Desktop\\SeleniumSoftwares\\Drivers\\geckodriver.exe");
+				try {
+					System.setProperty("webdriver.firefox.marionette",System.getProperty("user.dir")+"\\Drivers\\geckodriver.exe");
+					
+					driver = new FirefoxDriver();
+					driver.manage().window().maximize();
+					driver.get(homeURL);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 				
-				driver = new FirefoxDriver();
-				driver.manage().window().maximize();
-				driver.get(homeURL);
 				break;
 				
 			case "IE":
-				System.setProperty("webdriver.firefox.marionette","C:\\Users\\C024994\\Desktop\\geckodriver.exe");
+				System.setProperty("webdriver.firefox.marionette",System.getProperty("user.dir")+"Drivers\\geckodriver.exe");
 				
 				driver = new InternetExplorerDriver();
 				driver.manage().window().maximize();
