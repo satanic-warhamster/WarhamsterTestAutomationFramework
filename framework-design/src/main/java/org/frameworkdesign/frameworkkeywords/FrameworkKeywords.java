@@ -6,7 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,6 +25,10 @@ import org.frameworkdesign.excelhandler.ExcelHandlerLibrary;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 @SuppressWarnings("all")
 public class FrameworkKeywords extends GlobalDeclarations{
 	
@@ -188,6 +196,44 @@ public class FrameworkKeywords extends GlobalDeclarations{
 			return null;
 		}
 		
+		/*public static By returnBy(Properties prop, String objName)
+		{
+			String strValHolder = returnDataInIterationSheetIfExists(objName);
+			String strValue = prop.getProperty(strValHolder);
+			//String[] arrStrValue = strValue.split("\\|");
+			int lastIndex=strValue.lastIndexOf("|");
+			String strObjType=strValue.substring(lastIndex+1);
+			String strObjValue = strValue.substring(0, lastIndex);
+			WebElement ele = null;
+			try{
+				switch(strObjType)
+				{
+				case "xpath":
+					ele = driver.findElement(By.xpath(strObjValue));
+					break;
+				case "id":
+					ele = driver.findElement(By.id(strObjValue));
+					break;
+				case "class":
+					ele = driver.findElement(By.className(strObjValue));
+					break;
+				case "css":
+					ele = driver.findElement(By.cssSelector(strObjValue));
+					break;
+				case "tag":
+					ele = driver.findElement(By.tagName(strObjValue));
+					break;
+						
+				}
+				return ele;
+			}
+			catch(Exception e)
+			{
+				System.out.println("Object could not be found in the repository");
+			}
+			return null;
+		}*/
+		
 		public static void sampleFunc(String textName)
 		{
 			//sampleCode
@@ -259,21 +305,29 @@ public class FrameworkKeywords extends GlobalDeclarations{
 		public static void ModuleHandler()
 		{
 			Method objMethod;
-			HashMap hConfigFile = new HashMap();
+			HashMap<String,List> hConfigFile = new HashMap();
 			hConfigFile = excelModuleFile.getContentInHashMap("ModuleConfig");
 			
 			//The purpose of this hashmap is to store the contents of the iteration sheet
-			HashMap hIterationSheet = new HashMap(); 
+			HashMap<String,List> hIterationSheet = new HashMap(); 
 			
 			//Creating n lists for every column in the "Module Config" sheet
-			List lstTCName = new ArrayList();
-			List lstExecStatus = new ArrayList();
-			List lstIterSheet = new ArrayList();
+			List<String> lstTCName = new ArrayList();
+			List<String> lstExecStatus = new ArrayList();
+			List<String> lstIterSheet = new ArrayList();
+//			List<String> lstTCDesc = new ArrayList();
+			
+			
+			List<String> lstIterNum = new ArrayList();
+			List<String> lstIterName = new ArrayList();
+			List<String> lstIterExec = new ArrayList();
+			List<String> lstTCDesc = new ArrayList();
 			
 			//Associating the list values of hash map to the newly created lists
-			lstTCName = (List)hConfigFile.get("Test Case Name");
-			lstExecStatus= (List)hConfigFile.get("Execution");
-			lstIterSheet = (List)hConfigFile.get("Iteration");
+			lstTCName = hConfigFile.get("Test Case Name");
+			lstExecStatus= hConfigFile.get("Execution");
+			lstIterSheet = hConfigFile.get("Iteration");
+//			lstTCDesc = hConfigFile.get("Description");
 			
 			//Assuming the size of the lists is the same. Gotta handle the scenario when they aren't the same.
 			int iTCCount = lstTCName.size();
@@ -285,30 +339,36 @@ public class FrameworkKeywords extends GlobalDeclarations{
 				
 				if(strExecStatus.equalsIgnoreCase("ON"))
 				{
+//					String strTCDesc = lstTCDesc.get(iter);
+					
 					strIteration = (String) lstIterSheet.get(iter);
 					hIterationSheet = excelModuleFile.getContentInHashMap(strIteration);
 					//While the contents of the iteration sheet differ from Module to Module, the 
 					//only columns that are constant across all iteration sheet are Iteration Number, Name and Execution
 					//Hence, creating Lists that reference these columns
-					List lstIterNum = new ArrayList();
-					List lstIterName = new ArrayList();
-					List lstIterExec = new ArrayList();
+					
 					
 					//Associate lists with the values of hashmap
-					lstIterNum = (List) hIterationSheet.get("Iteration Number");
-					lstIterName = (List) hIterationSheet.get("Name");
-					lstIterExec= (List) hIterationSheet.get("Execution");
+					lstIterNum = hIterationSheet.get("Iteration Number");
+					lstIterName = hIterationSheet.get("Name");
+					lstIterExec= hIterationSheet.get("Execution");
+					lstTCDesc = hIterationSheet.get("Description");
 					
 					int iterSize = lstIterNum.size();
 					for(int i = 0; i < iterSize; i++)
 					{
 						String strIterExecStatus = (String) lstIterExec.get(i);
 						String strIterName = (String) lstIterName.get(i);
+						String strTCDesc = lstTCDesc.get(i);
 						iIterNum = Integer.parseInt((String)lstIterNum.get(i));
 						//iIterNum = getCellRowNum("TestCases", "Test Case Name", strTCName);
 						if(strIterExecStatus.equalsIgnoreCase("ON"))
 						{
+							logger = extent.createTest(strIterName, strTCDesc);
+							logger.log(Status.INFO, "Start Test "+strIterName);
 							launchTestCase(strTCName);
+							extent.flush();
+							logger = null;
 						}
 					}
 				}
@@ -342,6 +402,27 @@ public class FrameworkKeywords extends GlobalDeclarations{
 				e.printStackTrace();
 			}
 		}
+		public static String createTimeStamp()
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+			Timestamp time = new Timestamp(System.currentTimeMillis());
+			return sdf.format(time).toString();
+		}
+		public static String getHostName()
+		{
+			String hostname = "unknown";
+	    	try
+	    	{
+	    	    InetAddress addr;
+	    	    addr = InetAddress.getLocalHost();
+	    	    hostname = addr.getHostName();
+	    	}
+	    	catch (UnknownHostException ex)
+	    	{
+	    	    System.out.println("Hostname can not be resolved");
+	    	}
+	    	return hostname;
+		}
 		public static void driverHandler()
 		{
 			HashMap hMap = new HashMap();
@@ -369,6 +450,14 @@ public class FrameworkKeywords extends GlobalDeclarations{
 				String execStatus = (String) lstModuleExec.get(i);
 				if(execStatus.equals("ON"))
 				{
+					reports = new ExtentHtmlReporter(System.getProperty("user.dir")+"\\RunResults\\"+moduleName+"_"+createTimeStamp()+".html");
+					extent = new ExtentReports();
+					extent.attachReporter(reports);
+					extent.setSystemInfo("OS",System.getProperty("os.name"));
+			        extent.setSystemInfo("Tester",getHostName());
+			        extent.setSystemInfo("Module Name", moduleName);
+			        reports.config().setDocumentTitle("Test Reports");
+			        reports.config().setReportName("Test Report");
 					System.out.println("Executing Module :"+ moduleName);
 					String filePath = (String) lstModulePath.get(i);
 					String orFilePath = (String) lstModuleOR.get(i);
@@ -386,7 +475,8 @@ public class FrameworkKeywords extends GlobalDeclarations{
 					
 					excelModuleFile = new ExcelHandlerLibrary(System.getProperty("user.dir")+filePath);
 					ModuleHandler();
-					
+					reports = null;
+					extent = null;
 				}
 			}
 			

@@ -11,6 +11,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
 public class GlobalDeclarations {
 	public static File fileObj;
@@ -37,5 +39,9 @@ public class GlobalDeclarations {
 	public static String strIteration;
 	public static String URL_LOCATION = CUR_DIR+"\\Resources\\URL\\URLs.properties";
 	public static HashMap<String, Integer> hMapForCurrentState = new HashMap<String, Integer>();
+	
+	//For reporting purposes
+	public static ExtentHtmlReporter reports;
 	public static ExtentReports extent;
+    public static ExtentTest logger;
 }
