@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="1" ignored="0" total="1" passed="0">
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Suite" duration-ms="32146" started-at="2017-08-15T08:45:03Z" finished-at="2017-08-15T08:45:35Z">
+  <suite name="Suite" duration-ms="54440" started-at="2017-09-02T15:13:58Z" finished-at="2017-09-02T15:14:52Z">
     <groups>
     </groups>
-    <test name="Test" duration-ms="32146" started-at="2017-08-15T08:45:03Z" finished-at="2017-08-15T08:45:35Z">
+    <test name="Test" duration-ms="54440" started-at="2017-09-02T15:13:58Z" finished-at="2017-09-02T15:14:52Z">
       <class name="org.frameworkdesign.DriverScript">
-        <test-method status="PASS" signature="storeURLValue(java.lang.String)[pri:0, instance:org.frameworkdesign.DriverScript@239963d8]" name="storeURLValue" is-config="true" duration-ms="816" started-at="2017-08-15T14:15:03Z" finished-at="2017-08-15T14:15:04Z">
+        <test-method status="PASS" signature="storeURLValue(java.lang.String)[pri:0, instance:org.frameworkdesign.DriverScript@239963d8]" name="storeURLValue" is-config="true" duration-ms="1408" started-at="2017-09-02T20:43:58Z" finished-at="2017-09-02T20:43:59Z">
           <params>
             <param index="0">
               <value>
@@ -18,47 +18,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- storeURLValue -->
-        <test-method status="FAIL" signature="mainArea()[pri:0, instance:org.frameworkdesign.DriverScript@239963d8]" name="mainArea" duration-ms="31297" started-at="2017-08-15T14:15:04Z" finished-at="2017-08-15T14:15:35Z">
-          <exception class="java.lang.NumberFormatException">
-            <message>
-              <![CDATA[For input string: ""]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[java.lang.NumberFormatException: For input string: ""
-	at java.lang.NumberFormatException.forInputString(Unknown Source)
-	at java.lang.Integer.parseInt(Unknown Source)
-	at java.lang.Integer.parseInt(Unknown Source)
-	at org.frameworkdesign.frameworkkeywords.FrameworkKeywords.ModuleHandler(FrameworkKeywords.java:363)
-	at org.frameworkdesign.frameworkkeywords.FrameworkKeywords.driverHandler(FrameworkKeywords.java:477)
-	at org.frameworkdesign.DriverScript.mainArea(DriverScript.java:36)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:108)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:661)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:869)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1193)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
-	at org.testng.TestRunner.privateRun(TestRunner.java:744)
-	at org.testng.TestRunner.run(TestRunner.java:602)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:380)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:375)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:340)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:289)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1301)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1226)
-	at org.testng.TestNG.runSuites(TestNG.java:1144)
-	at org.testng.TestNG.run(TestNG.java:1115)
-	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:132)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:230)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:76)
-]]>
-            </full-stacktrace>
-          </exception> <!-- java.lang.NumberFormatException -->
+        <test-method status="PASS" signature="mainArea()[pri:0, instance:org.frameworkdesign.DriverScript@239963d8]" name="mainArea" duration-ms="53011" started-at="2017-09-02T20:43:59Z" finished-at="2017-09-02T20:44:52Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- mainArea -->

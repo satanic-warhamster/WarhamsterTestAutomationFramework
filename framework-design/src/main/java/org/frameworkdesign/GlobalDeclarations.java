@@ -31,6 +31,7 @@ public class GlobalDeclarations {
 	public static ExcelHandlerLibrary excelModuleFile;
 	public static ExcelHandlerLibrary excelDriverFile;
 	public static ExcelHandlerLibrary excelDataFile;
+	public static ExcelHandlerLibrary excelBlockFile;
 	public static Method objMethod;
 	//The iteration sheet name and the iteration number being executed are stored in the strIteration 
 	//and iIterNum respectively

@@ -272,35 +272,71 @@ public class FrameworkKeywords extends GlobalDeclarations{
 			return true;
 		}
 		public static void launchTestCase(String strTCName)
-		{
-			
+		{			
 			Method objMethod;
 			iCurrStep = excelModuleFile.getCellRowNum("TestCases", "Test Case Name", strTCName);
 			//excelModuleFile = new excelHandlerLibrary("C:\\Users\\C024994\\Desktop\\SeleniumProgramming\\SampleProject\\src\\org\\pack\\common\\excelFiles\\sampleModuleFiles.xls");
 			//String strEnd = "END";
-			
 			//System.out.println(strRowData);
-			while(!(excelModuleFile.getCellData("TestCases", "Keyword", iCurrStep).toString().equalsIgnoreCase("END")))
+			String strCurrentMethod = excelModuleFile.getCellData("TestCases", "Keyword", iCurrStep).toString();
+			String strCurrentObject;
+			String strCurrentValue;
+			int iBlockMethod;
+			while(!(strCurrentMethod.equalsIgnoreCase("END")))
 			{
 				
 				//System.out.println(strRowData);
 				try
 				{
-					if(findObjectInLibrary(iCurrStep)!=null)
+					iBlockMethod = findMethodInBlockSheet(strCurrentMethod);
+					if(iBlockMethod != -1)
 					{
-						objMethod = findObjectInLibrary(iCurrStep);
-						invokeMethod(objMethod,iCurrStep);
-						
-						
+						executeBlock(iBlockMethod);
+					}
+					else if(findObjectInLibrary(strCurrentMethod)!=null)
+					{
+						strCurrentObject = excelModuleFile.getCellData("TestCases", "Object", iCurrStep);
+						strCurrentValue = excelModuleFile.getCellData("TestCases", "Value", iCurrStep);
+						objMethod = findObjectInLibrary(strCurrentMethod);
+						invokeMethod(objMethod,strCurrentObject,strCurrentValue);						
 					}					
 					iCurrStep++;
+					strCurrentMethod = excelModuleFile.getCellData("TestCases", "Keyword", iCurrStep).toString();
 				}
 				catch(Exception e)
 				{
 					e.printStackTrace();
 				}
+			}		
+		}
+		public static void executeBlock(int iBlockStep)
+		{
+			String strCurrentMethod = excelBlockFile.getCellData("Blocks", "Keyword", iBlockStep);			
+			while(!(strCurrentMethod.equalsIgnoreCase("END")))
+			{
+				if(findObjectInLibrary(strCurrentMethod)!=null)
+				{
+					String strCurrentObject = excelBlockFile.getCellData("Blocks", "Object", iBlockStep);
+					String strCurrentValue = excelBlockFile.getCellData("Blocks", "Value", iBlockStep);
+					objMethod = findObjectInLibrary(strCurrentMethod);
+					invokeMethod(objMethod,strCurrentObject,strCurrentValue);						
+				}
+				iBlockStep++;
 			}
-			
+		}
+		public static int findMethodInBlockSheet(String strBlockName)
+		{
+			//finds method in the block file and if found returns the row number
+			int iRowNum = -1;
+			try
+			{
+				iRowNum = excelBlockFile.getCellRowNum("Blocks", "BlockName", strBlockName);
+			}
+			catch(Exception e)
+			{
+				System.out.println(e.toString());
+			}
+			return iRowNum;
 		}
 		public static void ModuleHandler()
 		{
@@ -351,7 +387,7 @@ public class FrameworkKeywords extends GlobalDeclarations{
 					//Associate lists with the values of hashmap
 					lstIterNum = hIterationSheet.get("Iteration Number");
 					lstIterName = hIterationSheet.get("Name");
-					lstIterExec= hIterationSheet.get("Execution");
+					lstIterExec = hIterationSheet.get("Execution");
 					lstTCDesc = hIterationSheet.get("Description");
 					
 					int iterSize = lstIterNum.size();
@@ -375,15 +411,15 @@ public class FrameworkKeywords extends GlobalDeclarations{
 			}
 		}
 		//public static Array getKeysInHashMap()
-		public static Method findObjectInLibrary(int stepNo)
+		public static Method findObjectInLibrary(String strCurrentMethod)
 		{
 			String methodName;
 			String testStepKeyword;
 			try{
-				testStepKeyword = excelModuleFile.getCellData("TestCases", "Keyword", stepNo);
+//				testStepKeyword = excelModuleFile.getCellData("TestCases", "Keyword", stepNo);
 				Class[] argumentTypes = { String.class, String.class };
 			
-				Method objMethod = ApplicationKeywords.class.getMethod(testStepKeyword,String.class,String.class);
+				Method objMethod = ApplicationKeywords.class.getMethod(strCurrentMethod,String.class,String.class);
 				return objMethod;
 			}
 			catch(Exception e)
@@ -392,10 +428,10 @@ public class FrameworkKeywords extends GlobalDeclarations{
 			}
 			return null;
 		}
-		public static void invokeMethod(Method objMethod, int stepNo)
+		public static void invokeMethod(Method objMethod, String strCurrentObject,String strCurrentValue)
 		{
 			try{
-				objMethod.invoke(null, excelModuleFile.getCellData("TestCases", "Object", stepNo), excelModuleFile.getCellData("TestCases", "Value", stepNo));
+				objMethod.invoke(null, strCurrentObject, strCurrentValue);
 			}
 			catch(Exception e)
 			{
@@ -425,29 +461,31 @@ public class FrameworkKeywords extends GlobalDeclarations{
 		}
 		public static void driverHandler()
 		{
-			HashMap hMap = new HashMap();
+			HashMap<String,List> hMap;
 			hMap = excelDriverFile.getContentInHashMap("ModuleConfig");
-			List lstModuleName = new ArrayList();
-			List lstModuleExec = new ArrayList();
-			List lstModuleFName = new ArrayList();
-			List lstModulePath = new ArrayList();
-			List lstModuleOR = new ArrayList();
-			List lstModuleSite = new ArrayList();
+			List<String> lstModuleName = new ArrayList();
+			List<String> lstModuleExec = new ArrayList();
+			List<String> lstModuleFName = new ArrayList();
+			List<String> lstModulePath = new ArrayList();
+			List<String> lstModuleOR = new ArrayList();
+			List<String> lstModuleBlockFile = new ArrayList();
+			List<String> lstModuleSite = new ArrayList();
 			
 			//Creating list objects for each column in the driver sheet
-			lstModuleName = (List)hMap.get("Module Name");
-			lstModuleExec = (List)hMap.get("Execution");
-			lstModuleFName = (List)hMap.get("Module File Name");
-			lstModulePath = (List)hMap.get("Module File Path");
-			lstModuleOR = (List)hMap.get("OR Properties File Path");
-			lstModuleSite = (List)hMap.get("Site Name");
+			lstModuleName = hMap.get("Module Name");
+			lstModuleExec = hMap.get("Execution");
+			lstModuleFName = hMap.get("Module File Name");
+			lstModulePath = hMap.get("Module File Path");
+			lstModuleOR = hMap.get("OR Properties File Path");
+			lstModuleBlockFile = hMap.get("BlockFile");
+			lstModuleSite = hMap.get("Site Name");
 			
 			//Number of Modules in the Driver Sheet is stored in an integer variable lSize
 			int lSize = lstModuleName.size();
 			for(int i = 0; i < lSize; i++)
 			{
-				String moduleName = (String) lstModuleName.get(i);
-				String execStatus = (String) lstModuleExec.get(i);
+				String moduleName = lstModuleName.get(i);
+				String execStatus =  lstModuleExec.get(i);
 				if(execStatus.equals("ON"))
 				{
 					reports = new ExtentHtmlReporter(System.getProperty("user.dir")+"\\RunResults\\"+moduleName+"_"+createTimeStamp()+".html");
@@ -459,12 +497,13 @@ public class FrameworkKeywords extends GlobalDeclarations{
 			        reports.config().setDocumentTitle("Test Reports");
 			        reports.config().setReportName("Test Report");
 					System.out.println("Executing Module :"+ moduleName);
-					String filePath = (String) lstModulePath.get(i);
-					String orFilePath = (String) lstModuleOR.get(i);
-					String siteName = (String) lstModuleSite.get(i);
-					
+					String filePath = lstModulePath.get(i);
+					String orFilePath = lstModuleOR.get(i);
+					String siteName = lstModuleSite.get(i);
+					String blFilePath = lstModuleBlockFile.get(i);
+							
 					//Loads the OR File
-					objProp = loadProperties(System.getProperty("user.dir")+orFilePath);
+					objProp = loadProperties(System.getProperty("user.dir")+"\\Resources\\ObjectRepository\\"+orFilePath);
 					
 					homeURL = retrieveURL(siteName);
 					
@@ -473,7 +512,8 @@ public class FrameworkKeywords extends GlobalDeclarations{
 					
 					//Loads Module File to be used
 					
-					excelModuleFile = new ExcelHandlerLibrary(System.getProperty("user.dir")+filePath);
+					excelModuleFile = new ExcelHandlerLibrary(System.getProperty("user.dir")+"\\Resources\\ModuleFiles\\"+filePath);
+					excelBlockFile = new ExcelHandlerLibrary(System.getProperty("user.dir")+"\\Resources\\BlockFiles\\"+blFilePath);
 					ModuleHandler();
 					reports = null;
 					extent = null;
