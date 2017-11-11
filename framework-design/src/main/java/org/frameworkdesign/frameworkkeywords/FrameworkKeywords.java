@@ -322,6 +322,7 @@ public class FrameworkKeywords extends GlobalDeclarations{
 					invokeMethod(objMethod,strCurrentObject,strCurrentValue);						
 				}
 				iBlockStep++;
+				strCurrentMethod = excelBlockFile.getCellData("Blocks", "Keyword", iBlockStep);
 			}
 		}
 		public static int findMethodInBlockSheet(String strBlockName)

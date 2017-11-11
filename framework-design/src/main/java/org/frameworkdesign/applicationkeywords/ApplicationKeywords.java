@@ -8,23 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -36,6 +21,7 @@ import org.frameworkdesign.excelhandler.ExcelHandlerLibrary;
 import org.frameworkdesign.frameworkkeywords.FrameworkKeywords;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -44,6 +30,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @SuppressWarnings("all")
@@ -86,7 +74,8 @@ public class ApplicationKeywords extends GlobalDeclarations{
 				}
 				catch(Exception e)
 				{
-					System.out.println("Unable to launch through Chrome");
+					System.out.println("Unable to launch through Chrome. Find Logs Below");
+					e.printStackTrace();
 					logger.log(Status.FAIL,"Unable to launch through Chrome");
 				}
 				break;
@@ -316,6 +305,35 @@ public class ApplicationKeywords extends GlobalDeclarations{
 				System.out.println("Unable to set text");
 				logger.log(Status.FAIL, "Unable to set text "+ hMapParam.get("Text"));
 			}
+		}
+		public static void fluentWaitForObject(String objName, String keywordValue)
+		{
+			String validParams = "WaitPeriod,PollingPeriod";
+			ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
+			HashMap<String, String> hMapParam;
+			hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams);
+			try
+			{
+				Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+						.withTimeout(Long.parseLong(hMapParam.get("WaitPeriod")), TimeUnit.SECONDS)
+						.pollingEvery(Long.parseLong(hMapParam.get("PollingPeriod")), TimeUnit.SECONDS)
+						.ignoring(NoSuchElementException.class);
+				wait.until(new Function<WebDriver, WebElement>() 
+				{
+				  public WebElement apply(WebDriver driver) {
+				  return ele;
+				}
+				});
+				logger.log(Status.PASS, "Object was found through fluent Wait");
+			}
+			catch(Exception e)
+			{
+				System.out.println("Element not found after fluent wait");
+				logger.log(Status.FAIL, "Object not found after fluent wait");
+				e.printStackTrace();
+			}
+			
+			
 		}
 
 }
