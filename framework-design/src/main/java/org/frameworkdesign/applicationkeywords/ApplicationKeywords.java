@@ -16,6 +16,7 @@ import org.testng.asserts.SoftAssert;
 
 import com.aventstack.extentreports.Status;
 
+import org.apache.commons.lang3.StringUtils;
 import org.frameworkdesign.GlobalDeclarations;
 import org.frameworkdesign.excelhandler.ExcelHandlerLibrary;
 import org.frameworkdesign.frameworkkeywords.FrameworkKeywords;
@@ -31,6 +32,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -334,6 +336,98 @@ public class ApplicationKeywords extends GlobalDeclarations{
 			}
 			
 			
+		}
+		public static void selectValueFromDropdown(String objName, String keywordValue)
+		{
+			String validParams = "SelectByMethod,@Index,@Value,@Text";
+			ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
+			HashMap<String, String> hMapParam;
+			int iCounter;
+			String[] strMultiVals;
+			hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams);
+			try
+			{
+				Select select = new Select(ele);
+				switch(hMapParam.get("SelectByMethod").trim())
+				{
+					case "VisibleText":
+						iCounter = StringUtils.countMatches(hMapParam.get("@Text"), ",");
+						if(iCounter==0)
+							select.selectByVisibleText(hMapParam.get("@Text"));
+						else
+						{
+							strMultiVals = hMapParam.get("@Text").split(";");
+							if(select.isMultiple())
+								for(String strVal:strMultiVals)
+								{
+									select.selectByVisibleText(strVal);
+									Thread.sleep(new Long(2000));
+								}
+							else
+								throw new Exception();
+						}
+						break;
+					case "Index":
+						iCounter = StringUtils.countMatches(hMapParam.get("@Index"), ",");
+						if(iCounter==0)
+							select.selectByIndex(Integer.parseInt(hMapParam.get("@Index")));
+						else
+						{
+							strMultiVals = hMapParam.get("@Index").split(";");
+							if(select.isMultiple())
+								for(String strVal:strMultiVals)
+								{
+									select.selectByIndex(Integer.parseInt(strVal));
+									Thread.sleep(new Long(2000));
+									
+								}
+							else
+								throw new Exception();
+						}
+						break;
+					case "Value":
+						iCounter = StringUtils.countMatches(hMapParam.get("@Value"), ",");
+						if(iCounter==0)
+							select.selectByValue(hMapParam.get("@Value"));
+						else
+						{
+							strMultiVals = hMapParam.get("@Value").split(";");
+							if(select.isMultiple())
+								for(String strVal:strMultiVals)
+								{
+									select.selectByValue(strVal);
+									Thread.sleep(new Long(2000));
+								}
+							else
+								throw new Exception();
+						}
+						break;
+					default:
+						iCounter = StringUtils.countMatches(hMapParam.get("@Text"), ",");
+						if(iCounter==0)
+							select.selectByVisibleText(hMapParam.get("@Text"));
+						else
+						{
+							strMultiVals = hMapParam.get("@Text").split(";");
+							if(select.isMultiple())
+								for(String strVal:strMultiVals)
+								{
+									select.selectByVisibleText(strVal);
+									Thread.sleep(new Long(2000));
+								}
+							else
+								throw new Exception();
+						}
+						break;
+				}
+				logger.log(Status.PASS, "Object was found through fluent Wait");
+			}
+			catch(Exception e)
+			{
+				System.out.println("Element not found after fluent wait");
+				logger.log(Status.FAIL, "Object not found after fluent wait");
+				e.printStackTrace();
+			}
 		}
 
 }

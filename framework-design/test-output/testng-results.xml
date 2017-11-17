@@ -2,12 +2,12 @@
 <testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Suite" duration-ms="23678" started-at="2017-11-11T07:10:53Z" finished-at="2017-11-11T07:11:17Z">
+  <suite name="Suite" duration-ms="35477" started-at="2017-11-17T13:42:39Z" finished-at="2017-11-17T13:43:14Z">
     <groups>
     </groups>
-    <test name="Test" duration-ms="23678" started-at="2017-11-11T07:10:53Z" finished-at="2017-11-11T07:11:17Z">
+    <test name="Test" duration-ms="35477" started-at="2017-11-17T13:42:39Z" finished-at="2017-11-17T13:43:14Z">
       <class name="org.frameworkdesign.DriverScript">
-        <test-method status="PASS" signature="storeURLValue(java.lang.String)[pri:0, instance:org.frameworkdesign.DriverScript@239963d8]" name="storeURLValue" is-config="true" duration-ms="636" started-at="2017-11-11T12:40:53Z" finished-at="2017-11-11T12:40:54Z">
+        <test-method status="PASS" signature="storeURLValue(java.lang.String)[pri:0, instance:org.frameworkdesign.DriverScript@239963d8]" name="storeURLValue" is-config="true" duration-ms="599" started-at="2017-11-17T19:12:39Z" finished-at="2017-11-17T19:12:39Z">
           <params>
             <param index="0">
               <value>
@@ -18,7 +18,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- storeURLValue -->
-        <test-method status="PASS" signature="mainArea()[pri:0, instance:org.frameworkdesign.DriverScript@239963d8]" name="mainArea" duration-ms="23017" started-at="2017-11-11T12:40:54Z" finished-at="2017-11-11T12:41:17Z">
+        <test-method status="PASS" signature="mainArea()[pri:0, instance:org.frameworkdesign.DriverScript@239963d8]" name="mainArea" duration-ms="34855" started-at="2017-11-17T19:12:39Z" finished-at="2017-11-17T19:13:14Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- mainArea -->
