@@ -1,5 +1,6 @@
 package org.frameworkdesign.applicationkeywords;
 
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
@@ -40,7 +41,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class ApplicationKeywords extends GlobalDeclarations{
 	/*
 	 * General structure of an application keyword
-	 * public static void <keywordName>(String objName, String keywordValue) throws InterruptedException
+	 * public static void <keywordName>(String strObject, String strValue) throws InterruptedException
 	 * Grab Object From Object Repository using method grabObjectFromOR
 	 * Get Valid Params using associateParametersWithValues
 	 * Perform actions
@@ -52,11 +53,10 @@ public class ApplicationKeywords extends GlobalDeclarations{
 		 * Input Parameters - Mandatory - Browser. Optional - URL
 		 * 
 		 */
-		public static void launchHomepage(String objName, String keywordValue)
+		public static void launchHomepage()
 		{
 			String validParams = "Browser,@URL";
-			HashMap<String,String> hMapParam = new HashMap();
-			hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams);
+			ele = FrameworkKeywords.fnInitializeTestStep(validParams);
 			if(!hMapParam.get("@URL").isEmpty())
 			{
 				homeURL = FrameworkKeywords.retrieveURL(hMapParam.get("@URL"));
@@ -127,7 +127,7 @@ public class ApplicationKeywords extends GlobalDeclarations{
 		 * Input Parameters - NA
 		 * 
 		 */
-		public static void quitApplication(String objName, String keywordValue)
+		public static void quitApplication()
 		{
 			try
 			{
@@ -147,18 +147,19 @@ public class ApplicationKeywords extends GlobalDeclarations{
 		 * Modified By-
 		 * 
 		 */
-		public static void object_Click(String objName, String keywordValue)
+		public static void object_Click()
 		{
-			ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
+			String validParams = "";
+			ele = FrameworkKeywords.fnInitializeTestStep(validParams);
 			try
 			{
 				ele.click();
-				logger.log(Status.PASS, objName+" was clicked");
+				logger.log(Status.PASS, strObject+" was clicked");
 			}
 			catch(Exception e)
 			{
 				System.out.println("Unable to click on element");
-				logger.log(Status.FAIL, "Unable to click on element "+objName);
+				logger.log(Status.FAIL, "Unable to click on element "+strObject);
 			}
 		}
 		/*
@@ -169,10 +170,10 @@ public class ApplicationKeywords extends GlobalDeclarations{
 		 * Modified By-
 		 * 
 		 */
-		public static void scriptPause(String objName, String keywordValue)
+		public static void scriptPause()
 		{
 			String validParams = "Duration";
-			HashMap hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams); 
+			ele = FrameworkKeywords.fnInitializeTestStep(validParams); 
 			//hashHap
 			try
 			{
@@ -191,10 +192,11 @@ public class ApplicationKeywords extends GlobalDeclarations{
 		 * Input Parameters - NA
 		 * 
 		 */
-		public static void grabDataFile(String objName, String keywordValue)
+		public static void grabDataFile()
 		{
 			String validParams = "Path";
-			HashMap hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams);
+			HashMap hMapParam = FrameworkKeywords.associateParametersWithValues(strValue, validParams);
+			ele = FrameworkKeywords.fnInitializeTestStep(validParams);
 			try
 			{
 				excelDataFile = new ExcelHandlerLibrary(hMapParam.get("Path").toString());
@@ -213,18 +215,18 @@ public class ApplicationKeywords extends GlobalDeclarations{
 		 * Modified By-
 		 * 
 		 */
-		public static void waitUntilObjectFound(String objName, String keywordValue)
+		public static void waitUntilObjectFound()
 		{
 			String validParams = "Time";
 			By by = null;
-			HashMap hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams);
-			//ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
+			ele = FrameworkKeywords.fnInitializeTestStep(validParams);
+			//ele = FrameworkKeywords.grabObjectFromOR(objProp, strObject);
 			HashMap<String,String> hObjHandler = new HashMap();
-			int intDelimPosition = objName.indexOf(";");
+			int intDelimPosition = strObject.indexOf(";");
 			String strValHolder;
 			if(intDelimPosition!= -1)
 			{
-				hObjHandler = FrameworkKeywords.associateObjectAgainstLiveIT(objName);
+				hObjHandler = FrameworkKeywords.associateObjectAgainstLiveIT(strObject);
 				String strTCEnv = excelModuleFile.getCellData(strIteration, "Environment", iIterNum+1);
 				try{
 					
@@ -247,9 +249,9 @@ public class ApplicationKeywords extends GlobalDeclarations{
 			}
 			else
 			{
-				strValHolder = FrameworkKeywords.returnDataInIterationSheetIfExists(objName);
+				strValHolder = FrameworkKeywords.returnDataInIterationSheetIfExists(strObject);
 				by = FrameworkKeywords.returnBy(objProp, strValHolder);					
-				//return ele = returnObject(prop, objName);
+				//return ele = returnObject(prop, strObject);
 			}
 			try
 			{
@@ -269,10 +271,11 @@ public class ApplicationKeywords extends GlobalDeclarations{
 		 * Input Parameters - NA
 		 * 
 		 */
-		public static void hoverOverObject(String objName, String keywordValue)
+		public static void hoverOverObject()
 		{
+			String validParams = "";
 			Actions action = new Actions(driver);
-			ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
+			ele = FrameworkKeywords.fnInitializeTestStep(validParams);
 			try
 			{
 				action.moveToElement(ele).build().perform();
@@ -290,12 +293,10 @@ public class ApplicationKeywords extends GlobalDeclarations{
 		 * Input Parameters - Text
 		 * 
 		 */
-		public static void setText(String objName, String keywordValue)
+		public static void setText()
 		{
 			String validParams = "Text";
-			ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
-			HashMap<String,String> hMapParam;
-			hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams);
+			ele = FrameworkKeywords.fnInitializeTestStep(validParams);
 			try
 			{
 				ele.sendKeys(hMapParam.get("Text"));
@@ -308,12 +309,10 @@ public class ApplicationKeywords extends GlobalDeclarations{
 				logger.log(Status.FAIL, "Unable to set text "+ hMapParam.get("Text"));
 			}
 		}
-		public static void fluentWaitForObject(String objName, String keywordValue)
+		public static void fluentWaitForObject()
 		{
 			String validParams = "WaitPeriod,PollingPeriod";
-			ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
-			HashMap<String, String> hMapParam;
-			hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams);
+			ele = FrameworkKeywords.fnInitializeTestStep(validParams);
 			try
 			{
 				Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
@@ -337,14 +336,12 @@ public class ApplicationKeywords extends GlobalDeclarations{
 			
 			
 		}
-		public static void selectValueFromDropdown(String objName, String keywordValue)
+		public static void selectValueFromDropdown()
 		{
 			String validParams = "SelectByMethod,@Index,@Value,@Text";
-			ele = FrameworkKeywords.grabObjectFromOR(objProp, objName);
-			HashMap<String, String> hMapParam;
+			ele = FrameworkKeywords.fnInitializeTestStep(validParams);
 			int iCounter;
 			String[] strMultiVals;
-			hMapParam = FrameworkKeywords.associateParametersWithValues(keywordValue, validParams);
 			try
 			{
 				Select select = new Select(ele);
@@ -424,8 +421,8 @@ public class ApplicationKeywords extends GlobalDeclarations{
 			}
 			catch(Exception e)
 			{
-				System.out.println("Element not found after fluent wait");
-				logger.log(Status.FAIL, "Object not found after fluent wait");
+				System.out.println("Unable to select value from dropdown");
+				logger.log(Status.FAIL, "Unable to select value from dropdown");
 				e.printStackTrace();
 			}
 		}

@@ -40,9 +40,16 @@ public class GlobalDeclarations {
 	public static String strIteration;
 	public static String URL_LOCATION = CUR_DIR+"\\Resources\\URL\\URLs.properties";
 	public static HashMap<String, Integer> hMapForCurrentState = new HashMap<String, Integer>();
-	
+	public static HashMap<String, String> hMapParam = new HashMap<String, String>();
 	//For reporting purposes
 	public static ExtentHtmlReporter reports;
 	public static ExtentReports extent;
     public static ExtentTest logger;
+    //End of For Reporting Purposes
+    //For test step initiation
+    public static String strObject;
+    public static String strValue;
+    public static String strErrorAction;
+    //End of For Test step initiation
+    public static boolean boolInBlock=false;
 }

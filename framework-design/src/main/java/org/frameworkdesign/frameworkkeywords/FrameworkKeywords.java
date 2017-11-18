@@ -55,6 +55,31 @@ public class FrameworkKeywords extends GlobalDeclarations{
 			}
 			return null;
 		}
+		public static WebElement fnInitializeTestStep(String validParams)
+		{
+			if(!boolInBlock)
+			{
+				strObject = excelModuleFile.getCellData("TestCases", "Object", iCurrStep).toString();
+				strValue = excelModuleFile.getCellData("TestCases", "Value", iCurrStep).toString();
+			}
+			
+			strErrorAction = excelModuleFile.getCellData("TestCases", "ErrorAction", iCurrStep).toString();			
+			try {
+				if(!validParams.isEmpty())
+				{
+					hMapParam = associateParametersWithValues(strValue, validParams);
+				}
+				if(!strObject.isEmpty())
+				{
+					return returnObject(objProp, strObject);
+				}				
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return null;
+		}
 		public static WebElement grabObjectFromOR(Properties prop, String objName)
 		{
 			//handlesFlow
@@ -70,18 +95,10 @@ public class FrameworkKeywords extends GlobalDeclarations{
 			{
 				hObjHandler = associateObjectAgainstLiveIT(objName);
 				String strTCEnv = excelModuleFile.getCellData(strIteration, "Environment", iIterNum+1);
-				try{
-					
-					if(strTCEnv.equalsIgnoreCase("Live"))
-					{
-						return ele = returnObject(prop,hObjHandler.get(strTCEnv));
-					}
-					else if(strTCEnv.equalsIgnoreCase("IT"))
-					{
-						return ele = returnObject(prop,hObjHandler.get(strTCEnv));
-					}
-						
-				}
+				try
+				{					
+					return ele = returnObject(prop,hObjHandler.get(strTCEnv));
+				}		
 				catch(Exception e)
 				{
 					System.out.println("Error parsing object string");
@@ -291,14 +308,14 @@ public class FrameworkKeywords extends GlobalDeclarations{
 					iBlockMethod = findMethodInBlockSheet(strCurrentMethod);
 					if(iBlockMethod != -1)
 					{
+						boolInBlock = true;
 						executeBlock(iBlockMethod);
+						boolInBlock = false;
 					}
 					else if(findObjectInLibrary(strCurrentMethod)!=null)
 					{
-						strCurrentObject = excelModuleFile.getCellData("TestCases", "Object", iCurrStep);
-						strCurrentValue = excelModuleFile.getCellData("TestCases", "Value", iCurrStep);
 						objMethod = findObjectInLibrary(strCurrentMethod);
-						invokeMethod(objMethod,strCurrentObject,strCurrentValue);						
+						invokeMethod(objMethod);						
 					}					
 					iCurrStep++;
 					strCurrentMethod = excelModuleFile.getCellData("TestCases", "Keyword", iCurrStep).toString();
@@ -316,10 +333,10 @@ public class FrameworkKeywords extends GlobalDeclarations{
 			{
 				if(findObjectInLibrary(strCurrentMethod)!=null)
 				{
-					String strCurrentObject = excelBlockFile.getCellData("Blocks", "Object", iBlockStep);
-					String strCurrentValue = excelBlockFile.getCellData("Blocks", "Value", iBlockStep);
+					strObject = excelBlockFile.getCellData("Blocks", "Object", iBlockStep);
+					strValue = excelBlockFile.getCellData("Blocks", "Value", iBlockStep);
 					objMethod = findObjectInLibrary(strCurrentMethod);
-					invokeMethod(objMethod,strCurrentObject,strCurrentValue);						
+					invokeMethod(objMethod);						
 				}
 				iBlockStep++;
 				strCurrentMethod = excelBlockFile.getCellData("Blocks", "Keyword", iBlockStep);
@@ -420,7 +437,7 @@ public class FrameworkKeywords extends GlobalDeclarations{
 //				testStepKeyword = excelModuleFile.getCellData("TestCases", "Keyword", stepNo);
 				Class[] argumentTypes = { String.class, String.class };
 			
-				Method objMethod = ApplicationKeywords.class.getMethod(strCurrentMethod,String.class,String.class);
+				Method objMethod = ApplicationKeywords.class.getMethod(strCurrentMethod);
 				return objMethod;
 			}
 			catch(Exception e)
@@ -429,10 +446,10 @@ public class FrameworkKeywords extends GlobalDeclarations{
 			}
 			return null;
 		}
-		public static void invokeMethod(Method objMethod, String strCurrentObject,String strCurrentValue)
+		public static void invokeMethod(Method objMethod)
 		{
 			try{
-				objMethod.invoke(null, strCurrentObject, strCurrentValue);
+				objMethod.invoke(null);
 			}
 			catch(Exception e)
 			{
