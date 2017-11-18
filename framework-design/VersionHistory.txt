@@ -1,0 +1,18 @@
+version 0.8.1:
+1. Drastic restructuring of function call
+No input parameters to functions. Instead, I'll device a way to initialize step values in one go
+What options do I have?
+Well for one I can declare global variables for step values. For example, strObject for object strValue for Value and strErrorAction for error action
+This will minimize overheads and will simplify function creation process
+I will also integrate the step keyword values initialization process with grabbingobject from keyword
+This bit is conufsing though since some keywords do not require objects. There is a simple solution to this issue though
+
+Okay, so this is what imma do
+1. I'll find a new cook. The current one wants a pay raise. We'd increase his pay less than 6 months back. He's gotta go
+2. I will club the webdriver initialization function with the step keyword function and give it a fancy new name, let's say fnInitializeTestStep (damn! I'm smart)
+3. I will introduce the error action method but before that lemme see what default error action Selenium possesses (Did I spell that right)
+4. Treat myself with a Fuse once I achieve this.
+
+This is what I've done so far
+1. Decided that I'll have a Fuse once I've achieved this.
+2. Declared test step variables
